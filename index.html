@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המאפים של מרגלית</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #c0392b;
+            --accent: #d35400;
+            --bg-light: #fdfaf7;
+            --text-main: #2c3e50;
+            --whatsapp: #25D366;
+            --phone-blue: #3498db;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Assistant', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ניווט */
+        header {
+            background: white;
+            padding: 5px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 15px;
+        }
+
+        .logo-img {
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 5px 0;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* ניהול דפים */
+        .page {
+            display: none;
+            min-height: 80vh;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hero Slider */
+        .hero-slider {
+            height: 50vh;
+            /* הקטנת הגובה בנייד כדי למנוע זום מוגזם */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            background-color: var(--bg-light);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            /* חוזרים למילוי מלא של המסך */
+            background-position: center center;
+            /* מתמקד במרכז התמונה */
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: -1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 30px 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* כפתורים */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 250px;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp);
+            color: white;
+        }
+
+        .btn-phone {
+            background: var(--phone-blue);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* סקשנים */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 15px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* יתרונות */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            text-align: center;
+        }
+
+        .feature-card {
+            padding: 20px;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        /* טעימה מהגלריה */
+        .home-gallery-teaser {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .teaser-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 250px;
+            box-shadow: var(--shadow);
+        }
+
+        .teaser-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .teaser-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* איך זה עובד */
+        .steps {
+            background: #fef5ec;
+            padding: 50px 15px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .step-num {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        /* גלריה */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .gallery-caption {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .gallery-intro {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* תנאים */
+        .terms-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .terms-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border-right: 4px solid var(--accent);
+        }
+
+        .terms-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .terms-card ul {
+            list-style: none;
+        }
+
+        .terms-card li {
+            margin-bottom: 10px;
+            padding-right: 20px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .terms-card li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0;
+            color: var(--accent);
+        }
+
+        /* כפתורי ציפה משולבים */
+        .float-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        .float-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            color: white;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .float-whatsapp {
+            background-color: var(--whatsapp);
+        }
+
+        .float-phone {
+            background-color: var(--phone-blue);
+        }
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 8px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* התאמה למחשב בלבד - תיקון החיתוך */
+        /* תיקון נקודתי למחשב בלבד - פותר את התנגשות הטקסט והחיתוך */
+        /* תיקון למחשב - טקסט באמצע ותמונה מלאה */
+        @media (min-width: 768px) {
+            .hero-slider {
+                height: 600px;
+                display: flex !important;
+                align-items: center;
+                justify-content: center; /* מרכוז התיבה כולה */
+                background-color: var(--bg-light);
+                padding: 0;
+            }
+
+            .hero-overlay {
+                position: relative;
+                width: 60%;
+                max-width: 400px; /* רוחב תיבה נוח לקריאה */
+                margin-right: 0; 
+                background: rgba(0, 0, 0, 0.45); /* חזרה לצבע הכהה מהטלפון */
+                color: white; /* טקסט לבן */
+                text-align: center; 
+                z-index: 10;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: var(--shadow);
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+                color: var(--primary);
+                text-shadow: none;
+            }
+
+            .slide {
+                position: absolute;
+                width: 100% !important;
+                height: 100%;
+                left: 0;
+                background-size: contain; /* תמונה מלאה בלי חיתוך */
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            .btn-group {
+                flex-direction: row;
+                justify-content: center; /* מרכז את הכפתורים */
+                gap: 15px;
+            }
+
+            .btn {
+                width: auto;
+                min-width: 160px;
+                margin: 0;
+            }
+
+            /* שאר האלמנטים - נשארים כפי שהיו */
+            .features-grid, .home-gallery-teaser, .steps-grid, .terms-container { 
+                grid-template-columns: repeat(3, 1fr); 
+            }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+            .gallery-item img { height: 280px; }
+        }
+
+
+        footer {
+            background: var(--text-main);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* רווח בין האייקונים */
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 26px; /* גודל האייקונים */
+            transition: 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent); /* צבע זהב/כתום במעבר עכבר */
+            transform: translateY(-3px); /* קפיצה קטנה למעלה */
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <img src="MargalitSite/images/logo.png" alt="לוגו" class="logo-img" onclick="showPage('home')">
+            <ul class="nav-links">
+                <li><a onclick="showPage('home')" id="link-home" class="active">בית</a></li>
+                <li><a onclick="showPage('gallery')" id="link-gallery">הגלריה</a></li>
+                <li><a onclick="showPage('terms')" id="link-terms">תנאים</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="float-container">
+        <a href="tel:0505183940" class="float-btn float-phone"><i class="fas fa-phone"></i></a>
+        <a href="https://wa.me/972505183940" class="float-btn float-whatsapp" target="_blank"><i
+                class="fab fa-whatsapp"></i></a>
+    </div>
+
+    <main id="home" class="page active">
+        <section class="hero-slider">
+            <div class="slide active"
+                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('MargalitSite/images/mash_events1.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('MargalitSite/images/mash_events2.jpg');">
+            </div>
+            <div class="slide"
+                style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('MargalitSite/images/אירוע2.jpg');">
+            </div>
+
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1>המאפים של מרגלית</h1>
+                    <p>מגשי אירוח, מאפים פריכים וקינוחי בוטיק שנאפים באהבה בנהריה יפה נוף 45</p>
+                    <div class="btn-group">
+                        <a onclick="showPage('gallery')" class="btn btn-primary">צפו בגלריה</a>
+                        <a href="https://wa.me/972505183940" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>
+                            להזמנה</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title">למה מרגלית?</h2>
+            <div class="features-grid">
+                <div class="feature-card"><i class="fas fa-heart"></i>
+                    <h3>עבודת יד</h3>
+                    <p>בצק שנפתח באהבה ומאפים שנאפים במטבח ביתי חם.</p>
+                </div>
+                <div class="feature-card"><i class="fas fa-magic"></i>
+                    <h3>חומרי גלם מובחרים</h3>
+                    <p>אנחנו לא מתפשרים על איכות השוקולד, החמאה והטריות.</p>
+                </div>
+                <div class="feature-card"><i class="fas fa-truck-loading"></i>
+                    <h3>אירוח מושלם</h3>
+                    <p>מגשים מעוצבים שחוסכים לכם זמן וגורמים לכל אירוע להיראות פרימיום.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" style="background: white; border-radius: 20px; box-shadow: var(--shadow);">
+            <h2 class="section-title">טעימה מהתפריט</h2>
+            <div class="home-gallery-teaser">
+                <div class="teaser-item"><img src="MargalitSite/images/megulgalotKinder.jpg" alt="מגולגלות">
+                    <div class="teaser-overlay">
+                        <h3>מגולגלות קינדר</h3>
+                    </div>
+                </div>
+                <div class="teaser-item"><img src="MargalitSite/images/fricasse.jpg" alt="פריקסה">
+                    <div class="teaser-overlay">
+                        <h3>פריקסה ביתי</h3>
+                    </div>
+                </div>
+                <div class="teaser-item"><img src="MargalitSite/images/malabiWithRefaelo.jpg" alt="מלבי">
+                    <div class="teaser-overlay">
+                        <h3>מלבי רפאלו</h3>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center;"><a onclick="showPage('gallery')" class="btn"
+                    style="border: 2px solid var(--primary); color: var(--primary);">לגלריה המלאה</a></div>
+        </section>
+
+        <section class="steps">
+            <div class="container">
+                <h2 class="section-title">איך זה עובד?</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-num">1</div>
+                        <h3>בוחרים</h3>
+                        <p>צופים בגלריה ובוחרים את הפינוקים שלכם. ניתן להזמין מאפים וקינוחים מיוחדים נוספים בתיאום
+                            טלפוני.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">2</div>
+                        <h3>מזמינים</h3>
+                        <p>מתקשרים או שולחים הודעה בווטצאפ לתיאום איסוף.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-num">3</div>
+                        <h3>אוספים</h3>
+                        <p>מגיעים במועד הנקבע ליפה נוף 45 בנהריה לאיסוף</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <main id="gallery" class="page">
+        <div class="container">
+            <h2 class="section-title">הגלריה שלנו</h2>
+            <div class="gallery-intro">
+                <p style="margin-bottom: 15px;"><strong>לא מצאתם את מה שחיפשתם?</strong> <br> התפריט שלנו משתנה ומתעדכן.
+                    ניתן להזמין מאפים וקינוחים מיוחדים נוספים בתיאום טלפוני.</p>
+                <div class="btn-group">
+                    <a href="https://wa.me/972505183940" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>
+                        וואטסאפ</a>
+                    <a href="tel:0505183940" class="btn btn-phone"><i class="fas fa-phone"></i> שיחה לבירורים</a>
+                </div>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="MargalitSite/images/fricasse.jpg">
+                    <div class="gallery-caption">פריקסה ביתי</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/megulgalotKinder.jpg">
+                    <div class="gallery-caption">מגולגלות קינדר</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/malabiWithRefaelo.jpg">
+                    <div class="gallery-caption">מלבי רפאלו</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/sfinge.jpg">
+                    <div class="gallery-caption">ספינג' חם</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/musWhiteChocolate.jpg">
+                    <div class="gallery-caption">מוס לבן</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/mofleta.jpg">
+                    <div class="gallery-caption">מופלטה דבש</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/machine_cookies.jpg">
+                    <div class="gallery-caption">עוגיות מכונה</div>
+                </div>
+                <div class="gallery-item"><img src="MargalitSite/images/magashMixKinohiKosot.jpg">
+                    <div class="gallery-caption">מגש קינוחים</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="terms" class="page">
+        <div class="container">
+            <h2 class="section-title">תנאים ואחריות</h2>
+            <div class="terms-container">
+                <div class="terms-card">
+                    <h3>חשוב לדעת</h3>
+                    <ul>
+                        <li>המוצרים מיוצרים במטבח ביתי פרטי.</li>
+                        <li><strong>המקום אינו מחזיק בתעודת כשרות.</strong></li>
+                        <li>עשוי להכיל אלרגנים.</li>
+                        <li>רכישת המוצרים היא באחריות הלקוח בלבד.</li>
+                    </ul>
+                </div>
+                <div class="terms-card">
+                    <h3>הזמנה ואיסוף</h3>
+                    <ul>
+                        <li>יפה נוף 45, נהריה.</li>
+                        <li>מומלץ לבצע הזמנה לפחות 48 שעות מראש.</li>
+                        <li>תשלום ב-Bit, Paybox או מזומן באיסוף.</li>
+                        <li>לא ניתן לבטל הזמנה לאחר תחילת ההכנה.</li>
+                    </ul>
+                </div>
+                <div class="terms-card" style="text-align: center;">
+                    <h3>מענה אנושי</h3>
+                    <div class="btn-group">
+                        <a href="tel:0505183940" class="btn btn-phone" style="max-width: 100%;"><i
+                                class="fas fa-phone"></i> חייגו אלינו</a>
+                        <a href="https://wa.me/972505183940" class="btn btn-whatsapp" style="max-width: 100%;"><i
+                                class="fab fa-whatsapp"></i> שלחו הודעה</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+     <footer>
+        <p>© 2025 מרגלית מאפים | נהריה</p>
+        <div class="social-icons">
+            <a href="https://wa.me/972505183940" target="_blank" title="שלחו וואטסאפ">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="tel:0505183940" title="התקשרו אלינו">
+                <i class="fas fa-phone"></i>
+            </a>
+            <a href="קישור-לפייסבוק-שלך" target="_blank" title="פייסבוק">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="קישור-לאינסטגרם-שלך" target="_blank" title="אינסטגרם">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </footer>
+  
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            const link = document.getElementById('link-' + pageId);
+            if (link) link.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        function nextSlide() {
+            if (slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 5000);
+    </script>
+</body>
+
+</html>
